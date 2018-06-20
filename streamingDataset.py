@@ -1,9 +1,13 @@
 from readjson import extract_X_and_y
+import cv2
+import numpy as np
 
 class StreamingDataset:
-    def __init__(self, file_name):
+    def __init__(self, file_name, width, height):
         self.X = []
         self.y = []
+        self.width = width
+        self.height = height
         f = open(file_name, "r")
         for line in f:
             a,b = extract_X_and_y(line)
@@ -29,7 +33,7 @@ class StreamingDataset:
             indices = np.random.random_integers(0, high-1, batch_size)
             file_names = self.training_X[indices]
             y = self.training_y[indices]
-            ar = np.zeros((batch_size, 150, 150, 3))
+            ar = np.zeros((batch_size, height, width, 3))
             a = 0
             for file_name in file_names:
                 #print(file_name, str(y[a]))
@@ -46,7 +50,7 @@ class StreamingDataset:
             indices = np.random.random_integers(0, high-1, batch_size)
             file_names = self.test_X[indices]
             y = self.test_y[indices]
-            ar = np.zeros((batch_size, 150, 150, 3))
+            ar = np.zeros((batch_size, height, width, 3))
             a = 0
             for file_name in file_names:
                 img = cv2.imread(file_name)
@@ -59,6 +63,3 @@ class StreamingDataset:
 
 
 
-sd = StreamingDataset("Israeli license plates.json")
-print(sd.X[0:5])
-print(sd.y[0:5])
