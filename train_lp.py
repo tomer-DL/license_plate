@@ -8,12 +8,24 @@ from keras.utils import np_utils
 from keras import backend as K
 from utils import read_section
 from keras.optimizers import Adam
+from utils import read_section
 
-dataset = sd.StreamingDataset("Israeli license plates.json", 224,224)
+properties = read_section("part1.ini", "part1")
+model_dir = properties["model.save.dir"]
+model_file = properties["model.save.name"]
+img_width = properties["img.width"]
+img_height = properties["img.height"]
+images_root = properties["images.root.dir"]
+json_dir = properties["json.file.dir"]
+json_filename = properties["json.file.name"]
+
+json_file_path = json_dir + json_filename
+
+dataset = sd.StreamingDataset(json_file_path, images_root, img_height, img_width)
 
 
 model = Sequential()
-model.add(Conv2D(32, (5, 5), padding="same", activation='relu', input_shape=(224,224,3)))
+model.add(Conv2D(32, (5, 5), padding="same", activation='relu', input_shape=(img_height,img_width,3)))
 model.add(Conv2D(32, (5, 5), padding="same", activation='relu'))
 model.add(MaxPool2D(pool_size=(2,2)))
 model.add(Dropout(0.25))
