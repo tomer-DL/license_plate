@@ -3,11 +3,12 @@ import cv2
 import numpy as np
 
 class StreamingDataset:
-    def __init__(self, file_name, width, height):
+    def __init__(self, images_root, file_name, width, height):
         self.X = []
         self.y = []
         self.width = width
         self.height = height
+        self.images_root = images_root
         f = open(file_name, "r")
         for line in f:
             a,b = extract_X_and_y(line)
@@ -37,7 +38,7 @@ class StreamingDataset:
             a = 0
             for file_name in file_names:
                 #print(file_name, str(y[a]))
-                img = cv2.imread(file_name)
+                img = cv2.imread(self.images_root + file_name)
                 ar[a,:,:,:] = img
                 a += 1
             ar = ar.astype('float32')
@@ -53,7 +54,7 @@ class StreamingDataset:
             ar = np.zeros((batch_size, height, width, 3))
             a = 0
             for file_name in file_names:
-                img = cv2.imread(file_name)
+                img = cv2.imread(self.images_root + file_name)
                 ar[a,:,:,:] = img
                 a += 1
             ar = ar.astype('float32')
