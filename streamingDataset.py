@@ -34,7 +34,7 @@ class StreamingDataset:
             indices = np.random.random_integers(0, high-1, batch_size)
             file_names = self.training_X[indices]
             y = self.training_y[indices]
-            ar = np.zeros((batch_size, height, width, 3))
+            ar = np.zeros((batch_size, self.height, self.width, 3))
             a = 0
             for file_name in file_names:
                 #print(file_name, str(y[a]))
@@ -51,7 +51,7 @@ class StreamingDataset:
             indices = np.random.random_integers(0, high-1, batch_size)
             file_names = self.test_X[indices]
             y = self.test_y[indices]
-            ar = np.zeros((batch_size, height, width, 3))
+            ar = np.zeros((batch_size, self.height, self.width, 3))
             a = 0
             for file_name in file_names:
                 img = cv2.imread(self.images_root + file_name)
